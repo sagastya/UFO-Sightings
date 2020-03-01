@@ -9,7 +9,10 @@ createTable(tableData);
 // Handle 'Filter Table' button click event
 var button = d3.select("#filter-btn");
 button.on("click", buttonClick);
-button.on("change", inputChange);
+
+// Handle 'Filter Table' input change event
+var inputElem = d3.select("#filters");
+inputElem.on("change", inputChange);
 
 // This function creates UFO sightings table
 function createTable(table) {
@@ -54,21 +57,25 @@ function buttonClick() {
     filteredData = tableData.filter(sighting => sighting.datetime === inputDate);
     console.log(filteredData);
   };
-  if (inputCity && filteredData) {
-    filteredData = filteredData.filter(sighting => sighting.city === inputCity);
-    console.log(filteredData);
-  } else if (inputCity) {
-    filteredData = tableData.filter(sighting => sighting.city === inputCity);
-    console.log(filteredData);
+  if (inputCity) {
+    if (filteredData != "") {
+      filteredData = filteredData.filter(sighting => sighting.city === inputCity);
+      console.log(filteredData);
+    } else {
+      filteredData = tableData.filter(sighting => sighting.city === inputCity);
+      console.log(filteredData);
+    }
   };
-  if (inputState && filteredData) {
-    filteredData = filteredData.filter(sighting => sighting.state === inputState);
-    console.log(filteredData);
-  } else if (inputState) {
-    filteredData = tableData.filter(sighting => sighting.state === inputState);
-    congsole.log(filteredData);
+  if (inputState) {
+    if (filteredData != "") {
+      filteredData = filteredData.filter(sighting => sighting.state === inputState);
+      console.log(filteredData);
+    } else {
+      filteredData = tableData.filter(sighting => sighting.state === inputState);
+      console.log(filteredData);
+    }
   };
-  if (inputCountry && filteredData) {
+  if (inputCountry && filteredData!="") {
     filteredData = filteredData.filter(sighting => sighting.country === inputCountry);
     console.log(filteredData);
   } else if (inputCountry) {
@@ -82,15 +89,17 @@ function buttonClick() {
     filteredData = tableData.filter(sighting => sighting.shape === inputShape);
     console.log(filteredData);
   };
+
   if (filteredData) {
     createTable(filteredData);
   } else {
-    d3.select("tbody").html("");
+    createTable(tableData);
   };
 }
 
 function inputChange() {
   d3.select("tbody").html("");
+  filteredData = "";
   button.on("click", buttonClick);
 }
 
